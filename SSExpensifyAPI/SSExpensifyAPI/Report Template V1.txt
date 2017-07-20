@@ -1,0 +1,69 @@
+﻿@"<#-- Header -->
+                <#if (addHeader == true)>
+                    ReportDate,<#t>
+                    ReportID,<#t>
+                    ReportTitle,<#t>
+                    EmployeeID,<#t>
+                    EmployeeEmail,<#t>
+                    TransactionID,<#t>
+                    ExpenseDate,<#t>
+                    Merchant,<#t>
+                    ExpenseAmount,<#t>
+                    CategoryName,<#t>
+                    CategoryID,<#t>
+                    MCC,<#t>
+                    Customer-Project,<#t>
+                    Customer Account,<#t>
+                    Customer Name,<#t>
+                    Project ID,<#t>
+                    Project Name,<#t>
+                    Comment,<#t>
+                    Billable,<#t>
+                    Reimbursable,<#t>
+                    Card,<#t>
+                    ReceiptURL<#lt>
+                </#if>
+                <#-- Body -->
+                <#list reports as report>
+                    <#list report.transactionList as expense>
+                        <#if expense.modifiedCreated?has_content>
+                            <#assign created = expense.modifiedCreated?date(""yyyy-MM-dd"")?string(""yyyy-MM-dd"")>
+                        <#else>
+                            <#assign created = expense.created?date(""yyyy-MM-dd"")?string(""yyyy-MM-dd"")>
+                        </#if>
+                        <#if expense.modifiedMerchant?has_content>
+                            <#assign merchant = expense.modifiedMerchant>
+                        <#else>
+                            <#assign merchant = expense.merchant>
+                        </#if>
+                        <#if expense.convertedAmount?has_content>
+                            <#assign amount = (expense.convertedAmount/100)?string(""0.00"")>
+                        <#elseif expense.modifiedAmount?has_content>
+                            <#assign amount = (expense.modifiedAmount/100)?string(""0.00"")>
+                        <#else>
+                            <#assign amount = (expense.amount/100)?string(""0.00"")>
+                        </#if>
+                        ${report.submitted?date(""yyyy-MM-dd"")?string(""yyyy-MM-dd"")},<#t>
+                        ${report.reportID},<#t>
+                        ${report.reportName},<#t>
+                        ${report.submitterUserID},<#t>
+                        ${report.accountEmail},<#t>
+                        ${expense.transactionID},<#t>
+                        ${created},<#t>
+                        ${merchant},<#t>
+                        ${amount},<#t>
+                        ${expense.category},<#t>
+                        ${expense.categoryGlCode},<#t>
+                        ${expense.mcc},<#t>
+                        ${expense.ntag1} | ${expense.ntag2},<#t>
+                        ${expense.ntag1GlCode},<#t>
+                        ${expense.ntag1},<#t>
+                        ${expense.ntag2GlCode},<#t>
+                        ${expense.ntag2},<#t>
+                        ${expense.comment},<#t>
+                        ${expense.billable?string(""TRUE"", ""FALSE"")},<#t>
+                        ${expense.reimbursable?string(""TRUE"", ""FALSE"")},<#t>
+                        ${expense.cardName},<#t>
+                        ${expense.receiptObject.url}<#lt>
+                    </#list>
+                </#list>";
